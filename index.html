@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Power X Ban - Real Reporter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .container {
+      padding: 20px;
+      text-align: center;
+      z-index: 1;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #0f0;
+      text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+      margin-bottom: 20px;
+    }
+
+    label, input, textarea {
+      display: block;
+      margin: 10px auto;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    input, textarea {
+      padding: 10px;
+      background: #111;
+      color: #0f0;
+      border: 1px solid #0f0;
+      font-size: 1em;
+    }
+
+    button {
+      margin-top: 15px;
+      background: #0f0;
+      color: #000;
+      padding: 10px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      width: 90%;
+      max-width: 400px;
+      transition: background 0.3s;
+      font-size: 1em;
+    }
+
+    button:hover {
+      background: #0c0;
+    }
+
+    .footer {
+      margin-top: 30px;
+      color: #0f0;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="matrixCanvas"></canvas>
+
+<div class="container">
+  <h1>Power X Ban</h1>
+
+  <label for="number">Enter Target WhatsApp Number:</label>
+  <input type="text" id="number" placeholder="+92XXXXXXXXXX">
+
+  <label for="reason">Reason (optional):</label>
+  <textarea id="reason" placeholder="Spamming, Harassment, Fake Account, etc."></textarea>
+
+  <button onclick="sendReport()">Send Ban Report</button>
+  <button onclick="praiseDev()">Developer</button>
+
+  <div class="footer">
+    <p>Developer Contact: +92 349 4274582</p>
+  </div>
+</div>
+
+<script>
+  function sendReport() {
+    const number = document.getElementById('number').value.trim();
+    const reason = document.getElementById('reason').value.trim() || "This user is violating WhatsApp's Terms of Service.";
+
+    if (!number.startsWith('+') || number.length < 10) {
+      alert('Please enter a valid international number starting with +');
+      return;
+    }
+
+    const subject = encodeURIComponent("Report Abuse / Ban Request");
+    const body = encodeURIComponent(
+      "Hello WhatsApp Support,%0D%0A%0D%0AI would like to report the following number:%0D%0A" +
+      number + "%0D%0A%0D%0AReason:%0D%0A" + reason + "%0D%0A%0D%0A" +
+      "Please take appropriate action.%0D%0A%0D%0AThank you."
+    );
+
+    const mailtoLink = `mailto:support@whatsapp.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+  }
+
+  function praiseDev() {
+    alert("Developer OP! Power X Ban Tool is next level — Respect for +92 349 4274582!");
+  }
+
+  // Matrix animation
+  const canvas = document.getElementById("matrixCanvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+
+  let letters = "01".split("");
+  let fontSize = 14;
+  let columns = canvas.width / fontSize;
+  let drops = [];
+
+  for (let x = 0; x < columns; x++)
+    drops[x] = 1;
+
+  function draw() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#0F0";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      let text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+        drops[i] = 0;
+
+      drops[i]++;
+    }
+  }
+
+  setInterval(draw, 33);
+</script>
+
+</body>
+</html>
