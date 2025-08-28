@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Power X Ban - Real Reporter</title>
+  <title>Altesse - Vrai Journaliste</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -11,14 +11,40 @@
       font-family: 'Courier New', monospace;
       margin: 0;
       padding: 0;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
-    canvas {
-      position: fixed;
+    .constellation {
+      position: absolute;
       top: 0;
       left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
       z-index: -1;
+      animation: fadeIn 2s forwards;
+    }
+
+    .constellation:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: starfield 60s linear infinite;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes starfield {
+      from { transform: translateY(0); }
+      to { transform: translateY(-50px); }
     }
 
     .container {
@@ -77,40 +103,39 @@
 </head>
 <body>
 
-<canvas id="matrixCanvas"></canvas>
+<div class="constellation"></div>
 
 <div class="container">
-  <h1>Power X Ban</h1>
+  <h1>Altesse</h1>
 
-  <label for="number">Enter Target WhatsApp Number:</label>
-  <input type="text" id="number" placeholder="+92XXXXXXXXXX">
+  <label for="number">Entrez le numéro WhatsApp cible :</label>
+  <input type="text" id="number" placeholder="+243XXXXXXXXX">
 
-  <label for="reason">Reason (optional):</label>
-  <textarea id="reason" placeholder="Spamming, Harassment, Fake Account, etc."></textarea>
+  <label for="reason">Raison (optionnel) :</label>
+  <textarea id="reason" placeholder="Spam, Harcèlement, Faux Compte, etc."></textarea>
 
-  <button onclick="sendReport()">Send Ban Report</button>
-  <button onclick="praiseDev()">Developer</button>
+  <button onclick="sendReport()">Envoyer le rapport de bannissement</button>
+  <button onclick="praiseDev()">Développeur</button>
 
   <div class="footer">
-    <p>Developer Contact: +92 349 4274582</p>
+    <p>Contact du développeur : +243905526836</p>
   </div>
 </div>
 
 <script>
   function sendReport() {
     const number = document.getElementById('number').value.trim();
-    const reason = document.getElementById('reason').value.trim() || "This user is violating WhatsApp's Terms of Service.";
+    const reason = document.getElementById('reason').value.trim() || "Cet utilisateur enfreint les conditions d'utilisation de WhatsApp.";
 
     if (!number.startsWith('+') || number.length < 10) {
-      alert('Please enter a valid international number starting with +');
+      alert('Veuillez entrer un numéro international valide commençant par +');
       return;
     }
 
-    const subject = encodeURIComponent("Report Abuse / Ban Request");
+    const subject = encodeURIComponent("Signaler un abus / Demande de bannissement");
     const body = encodeURIComponent(
-      "Hello WhatsApp Support,%0D%0A%0D%0AI would like to report the following number:%0D%0A" +
-      number + "%0D%0A%0D%0AReason:%0D%0A" + reason + "%0D%0A%0D%0A" +
-      "Please take appropriate action.%0D%0A%0D%0AThank you."
+      "Bonjour le support WhatsApp,%0D%0A%0D%0AJ'aimerais signaler le numéro suivant :%0D%0A" +
+      number + "%0D%0A%0D%0ARaison :%0D%0A" + reason + "%0D%0A%0D%0AVeuillez prendre les mesures appropriées.%0D%0A%0D%0AJe vous remercie."
     );
 
     const mailtoLink = `mailto:support@whatsapp.com?subject=${subject}&body=${body}`;
@@ -118,43 +143,8 @@
   }
 
   function praiseDev() {
-    alert("Developer OP! Power X Ban Tool is next level — Respect for +92 349 4274582!");
+    alert("Développeur OP ! L'outil de bannissement d'Altesse est de niveau supérieur — Respect pour +243905526836 !");
   }
-
-  // Matrix animation
-  const canvas = document.getElementById("matrixCanvas");
-  const ctx = canvas.getContext("2d");
-
-  canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
-
-  let letters = "01".split("");
-  let fontSize = 14;
-  let columns = canvas.width / fontSize;
-  let drops = [];
-
-  for (let x = 0; x < columns; x++)
-    drops[x] = 1;
-
-  function draw() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#0F0";
-    ctx.font = fontSize + "px monospace";
-
-    for (let i = 0; i < drops.length; i++) {
-      let text = letters[Math.floor(Math.random() * letters.length)];
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
-        drops[i] = 0;
-
-      drops[i]++;
-    }
-  }
-
-  setInterval(draw, 33);
 </script>
 
 </body>
