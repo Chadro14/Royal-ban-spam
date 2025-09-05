@@ -1,1 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>ban&spam by Altesse </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      /* Le fond dégradé n'est plus nécessaire car le CMatrix le recouvre */
+      background: #000;
+    }
 
+    #cmatrix-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.7;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 2.8em;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      margin-bottom: 25px;
+      letter-spacing: 1px;
+    }
+
+    label {
+      display: block;
+      margin: 15px auto 5px auto;
+      text-align: left;
+      width: 90%;
+      max-width: 400px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 8px;
+      font-size: 1em;
+      width: 90%;
+      max-width: 400px;
+      box-sizing: border-box;
+      transition: border-color 0.3s, background-color 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #00aaff;
+      background-color: rgba(255, 255, 255, 0.25);
+      outline: none;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .info-text {
+      font-size: 0.85em;
+      color: #aaddff;
+      text-align: left;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+
+    .error-message {
+      color: #ffcccc;
+      font-size: 0.85em;
+      text-align: left;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      display: none;
+    }
+
+    button {
+      margin-top: 20px;
+      background: #0073e6;
+      color: #fff;
+      padding: 12px 25px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 90%;
+      max-width: 400px;
+      transition: background 0.3s ease, transform 0.2s ease;
+      font-size: 1.1em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    button:hover {
+      background: #005bb5;
+      transform: translateY(-2px);
+    }
+
+    .footer {
+      margin-top: 35px;
+      color: #aaddff;
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="cmatrix-background"></canvas>
+
+<div class="container">
+  <h1>Service de Consultation & Signalement</h1>
+
+  <div class="form-group">
+    <label for="number">Numéro WhatsApp à signaler:</label>
+    <input type="tel" id="number" placeholder="+24390XXXXXXX" required>
+    <p id="numberError" class="error-message">Format incorrect. Utilisez un format international (ex: +33612345678).</p>
+  </div>
+
+  <div class="form-group">
+    <label for="reason">Raison détaillée du signalement:</label>
+    <textarea id="reason" placeholder="Ex: Spam, harcèlement, arnaque. Décrivez l'incident avec précision (dates, faits, messages...)." required></textarea>
+  </div>
+  
+  <p class="info-text">Un rapport précis augmente significativement les chances d'une action de WhatsApp.</p>
+
+  <button onclick="reportManager.sendReport()">Envoyer le rapport</button>
+  <button onclick="window.open('https://whatsapp.com/channel/0029Vb5xgT01CYoIzsmkzj1B', '_blank')">Ma Chaîne WhatsApp</button>
+  <button onclick="reportManager.praiseDev()">Informations Développeur</button>
+
+  <div class="footer">
+    <p>Développé par <span id="developerNameFooter"></span> | Contact: <span id="developerContact">+243905526836</span></p>
+  </div>
+</div>
+
+<script>
+    const reportManager = {
+        developerName: "Son Altesse",
+        developerNumber: "+243905526836",
+        whatsappChannelLink: "https://whatsapp.com/channel/0029Vb5xgT01CYoIzsmkzj1B",
+        
+        init: function() {
+            document.getElementById('developerNameFooter').textContent = this.developerName;
+            document.getElementById('developerContact').textContent = this.developerNumber;
+        },
+
+        sendReport: function() {
+            const number = document.getElementById('number').value.trim();
+            const reason = document.getElementById('reason').value.trim();
+            const numberError = document.getElementById('numberError');
+            
+            if (!this.validateNumber(number)) {
+                numberError.style.display = 'block';
+                return;
+            } else {
+                numberError.style.display = 'none';
+            }
+
+            if (!this.validateReason(reason)) {
+                alert("Veuillez fournir une raison plus détaillée (minimum 50 caractères pour un rapport efficace).");
+                return;
+            }
+
+            const subject = encodeURIComponent("Signalement de compte WhatsApp - Rapport par un utilisateur");
+            const body = encodeURIComponent(
+                `Cher support de WhatsApp,\n\n` +
+                `Je soumets ce rapport urgent concernant une violation des conditions d'utilisation de WhatsApp par l'utilisateur suivant.\n\n` +
+                `Numéro de compte signalé : ${number}\n\n` +
+                `Détails du problème :\n${reason}\n\n` +
+                `J'espère que ce rapport détaillé vous permettra d'agir rapidement. Je me tiens à votre disposition pour toute information complémentaire.\n\n` +
+                `Cordialement,\n${this.developerName} (Utilisateur concerné)`
+            );
+
+            const mailtoLink = `mailto:support@whatsapp.com?subject=${subject}&body=${body}`;
+            window.location.href = mailtoLink;
+        },
+
+        validateNumber: function(number) {
+            const phoneRegex = /^\+[1-9]\d{1,14}$/;
+            return phoneRegex.test(number);
+        },
+        
+        validateReason: function(reason) {
+            return reason.length >= 50; 
+        },
+
+        praiseDev: function() {
+            alert(`Développé par ${this.developerName}!\nPour toute question ou suggestion, contactez : ${this.developerNumber}.\nVisitez ma chaîne WhatsApp pour plus d'infos.`);
+        }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+        reportManager.init();
+    });
+</script>
+
+<script>
+    // Script de l'effet CMatrix
+    const cmatrix = document.getElementById('cmatrix-background');
+    const ctx = cmatrix.getContext('2d');
+
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()_+-={}[]:";\'<>?,./|\\`~';
+    const columns = Math.floor(window.innerWidth / 20);
+    const drops = [];
+    for (let i = 0; i < columns; i++) {
+        drops[i] = 1;
+    }
+
+    function drawCMatrix() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, cmatrix.width, cmatrix.height);
+
+        ctx.fillStyle = '#00ff41'; // Couleur verte
+        ctx.font = '20px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = characters[Math.floor(Math.random() * characters.length)];
+            ctx.fillText(text, i * 20, drops[i] * 20);
+            if (drops[i] * 20 > cmatrix.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    window.addEventListener('resize', () => {
+        cmatrix.width = window.innerWidth;
+        cmatrix.height = window.innerHeight;
+    });
+
+    cmatrix.width = window.innerWidth;
+    cmatrix.height = window.innerHeight;
+
+    setInterval(drawCMatrix, 50);
+</script>
+
+</body>
+</html>
