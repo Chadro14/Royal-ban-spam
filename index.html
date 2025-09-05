@@ -16,7 +16,6 @@
       align-items: center;
       min-height: 100vh;
       overflow-x: hidden;
-      /* Le fond dégradé n'est plus nécessaire car le CMatrix le recouvre */
       background: #000;
     }
 
@@ -93,6 +92,27 @@
       margin-top: 10px;
       margin-bottom: 15px;
     }
+    
+    .file-input-wrapper {
+        margin-top: 15px;
+        text-align: left;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .file-input-wrapper p {
+        font-size: 0.9em;
+        color: #aaddff;
+        margin: 0;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    .file-instructions {
+        font-size: 0.8em;
+        color: #ffcccc;
+        margin-top: 5px;
+        text-align: center;
+    }
 
     .error-message {
       color: #ffcccc;
@@ -141,12 +161,12 @@
 <canvas id="cmatrix-background"></canvas>
 
 <div class="container">
-  <h1>Service de Consultation & Signalement</h1>
+  <h1>spam&ban⚠️</h1>
 
   <div class="form-group">
-    <label for="number">Numéro WhatsApp à signaler:</label>
+    <label for="number">entre le numéro de la victime 📱:</label>
     <input type="tel" id="number" placeholder="+24390XXXXXXX" required>
-    <p id="numberError" class="error-message">Format incorrect. Utilisez un format international (ex: +33612345678).</p>
+    <p id="numberError" class="error-message">Format incorrect. Utilisez un format international (ex: +243905526836).</p>
   </div>
 
   <div class="form-group">
@@ -155,6 +175,11 @@
   </div>
   
   <p class="info-text">Un rapport précis augmente significativement les chances d'une action de WhatsApp.</p>
+  
+  <div class="file-input-wrapper">
+    <p>Joindre des preuves (facultatif):</p>
+    <p class="file-instructions">Une fois l'e-mail ouvert, ajoutez vos captures d'écran en pièce jointe pour renforcer votre rapport.</p>
+  </div>
 
   <button onclick="reportManager.sendReport()">Envoyer le rapport</button>
   <button onclick="window.open('https://whatsapp.com/channel/0029Vb5xgT01CYoIzsmkzj1B', '_blank')">Ma Chaîne WhatsApp</button>
@@ -167,7 +192,7 @@
 
 <script>
     const reportManager = {
-        developerName: "Son Altesse",
+        developerName: "Son Altesse🌹",
         developerNumber: "+243905526836",
         whatsappChannelLink: "https://whatsapp.com/channel/0029Vb5xgT01CYoIzsmkzj1B",
         
@@ -199,7 +224,8 @@
                 `Je soumets ce rapport urgent concernant une violation des conditions d'utilisation de WhatsApp par l'utilisateur suivant.\n\n` +
                 `Numéro de compte signalé : ${number}\n\n` +
                 `Détails du problème :\n${reason}\n\n` +
-                `J'espère que ce rapport détaillé vous permettra d'agir rapidement. Je me tiens à votre disposition pour toute information complémentaire.\n\n` +
+                `Pour une meilleure analyse, veuillez inclure des captures d'écran des faits pertinents (messages, dates, etc.) en pièce jointe de cet email avant de l'envoyer.\n\n` +
+                `J'espère que ce rapport détaillé vous permettra d'agir rapidement.\n\n` +
                 `Cordialement,\n${this.developerName} (Utilisateur concerné)`
             );
 
